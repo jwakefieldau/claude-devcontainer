@@ -1,0 +1,10 @@
+{
+    "theme": "dark",
+    "forceLoginMethod": "claudeai",
+    "permissions": {
+        "defaultMode": "bypassPermissions"
+    },
+    "env": {
+        "DISABLE_AUTOUPDATER": "1"
+    }
+}
