@@ -18,6 +18,8 @@ Only add code comments to explain why code has been written and/or written in a 
 
 For all non-trivial functions and methods, add unit tests that test the success and failure paths.
 
+Unit tests are an essential part of the implementation, at all stages, not a follow-up step to be deferred.
+
 You can change the visibility of any definition if it is necessary to writing tests.
 
 Create mocks for code that relies on network services if that code is necessary to call in tests.
