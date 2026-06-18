@@ -1,4 +1,5 @@
 - Install https://github.com/devcontainers/cli
 - `devcontainer up`
+  - starts Claude
   - add `--remove-existing-container --cache-from none` to force rebuild 
-- `devcontainer exec claude` or attach from an IDE or `devcontainer exec zsh` to pull/clone code repos first etc
+- can also attach from an IDE or `devcontainer exec zsh` to pull/clone code repos first etc
