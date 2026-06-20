@@ -27,3 +27,11 @@ Create mocks for code that relies on network services if that code is necessary 
 ## DRY
 
 You should prefer to create reusable code units than to repeat code if it is non-trivial, and if the abstraction effectively hides details from callers of that code such that the callers' code is more simple.
+
+## OOP
+
+You should opt for dependency injection over composition unless there is a compelling reason to avoid dependency injection or to choose composition.
+
+You should opt for inheritance over dependency injection if it models an inherent taxonomic relationship between classes in the problem domain; eg: dogs are inherently animals, therefore it makes sense for a dog class to inherit from an animal class.
+
+You should opt for dependency injection over inheritance if the inheritance is solely to facilitate code re-use; ie: the inheritance is something we have conceived entirely in the solution domain.
