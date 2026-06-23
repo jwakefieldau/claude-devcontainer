@@ -3,3 +3,4 @@
   - starts Claude
   - add `--remove-existing-container --cache-from none` to force rebuild 
 - can also attach from an IDE or `devcontainer exec zsh` to pull/clone code repos first etc
+- Subagents are defined, most system prompt content is in there. 
