@@ -3,10 +3,16 @@
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0.5": {},
     "./claude-code-config": {
       "version": "0.0.1"
     }
   },
-  "postAttachCommand": "claude"
+  // we need these capabilities to manipulate netfilter via iptables
+  "runArgs": [
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
+  "postAttachCommand": "claude",
+  "postStartCommand": "sudo /usr/local/bin/init-firewall.sh && sudo /usr/local/bin/firewall-extra.sh"
 }
