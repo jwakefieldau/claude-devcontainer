@@ -6,11 +6,17 @@ mkdir ~vscode/.claude
 mv CLAUDE.md settings.json agents/ ~vscode/.claude/
 chown -R 1000:1000 ~vscode/
 
-# fix the firewall script to resolve statsig.com instead of
-# statsig.anthropic.com - it's fixed in their github but they haven't
-# published a fixed image yet >:(
+# init-firewall fixes
+# --------------------
+INIT_FIREWALL_PATH="/usr/local/bin/init-firewall.sh"
 
-#TODO
+# resolve statsig.com instead of statsig.anthropic.com - it's
+# fixed in their github but they haven't published a fixed image yet >:(
+sed -i '' -e 's/statsig\.anthropic\.com/statsig\.com/g' $INIT_FIREWALL_PATH
+
+# https://github.com/anthropics/claude-code/issues/91327
+# fix is obvious but not deployed yet
+sed -i '' -e 's/ipset add/ipset add -exist/g' $INIT_FIREWALL_PATH
 
 # TODO - add IPs to ipset named allowed-domains to permit outbound
 # traffic as necessary
