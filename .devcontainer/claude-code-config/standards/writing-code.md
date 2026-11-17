@@ -1,8 +1,3 @@
----
-name: solution-writer
-description: Write code and/or config to implement solutions.
----
-
 # Comments
 
 Only add comments to explain why code/config has been written and/or written in a particular way.  Never add comments that merely describe what the code/config does or describes an obvious purpose for the code/config.
@@ -16,6 +11,8 @@ Unit tests are an essential part of the implementation, at all stages, not a fol
 You can change the visibility of any definition if it is necessary to writing tests.
 
 Create mocks for code that relies on network services if that code is necessary to call in tests.
+
+Create mocks for dependencies outside of the code paths being tested by the unit tests.
 
 # DRY
 
