@@ -9,6 +9,7 @@ mv CLAUDE.md settings.json agents/ skills/ standards/ ~vscode/.claude/
 chown -R 1000:1000 ~vscode/
 chmod 0755 firewall-extra.sh
 mv firewall-extra.sh /usr/local/bin
+mv allow-domains-extra.txt /etc
 
 # init-firewall fixes
 # --------------------
@@ -21,12 +22,3 @@ sed -i -e 's/statsig\.anthropic\.com/statsig\.com/g' $INIT_FIREWALL_PATH
 # https://github.com/anthropics/claude-code/issues/91327
 # fix is obvious but not deployed yet
 sed -i -e 's/ipset add/ipset add -exist/g' $INIT_FIREWALL_PATH
-
-# additional permitted destination IP addresses for outbound traffic
-#-------------------------------------------------------------------
-
-# TODO - add IPs to ipset named allowed-domains to permit outbound
-# traffic as necessary
-
-# this ipset is created in the claude install process:
-# https://github.com/anthropics/claude-code/blob/main/.devcontainer/init-firewall.sh

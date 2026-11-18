@@ -1,0 +1,70 @@
+name: Release devcontainer feature
+
+# Packages .devcontainer/claude-code-config as a Dev Container Feature tarball
+# and publishes it as the latest GitHub release, so it can be referenced as:
+#   "https://github.com/<owner>/<repo>/releases/latest/download/devcontainer-feature-claude-code-config.tgz": {}
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".devcontainer/claude-code-config/**"
+      - ".github/workflows/release-feature.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-feature
+  cancel-in-progress: false
+
+env:
+  FEATURE_DIR: .devcontainer/claude-code-config
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Read feature metadata
+        id: meta
+        run: |
+          manifest="$FEATURE_DIR/devcontainer-feature.json"
+          id=$(jq -er '.id' "$manifest")
+          version=$(jq -er '.version' "$manifest")
+          test -f "$FEATURE_DIR/install.sh" || { echo "::error::install.sh missing from $FEATURE_DIR"; exit 1; }
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          echo "asset=devcontainer-feature-$id.tgz" >> "$GITHUB_OUTPUT"
+
+      - name: Build feature tarball
+        run: |
+          # devcontainer-feature.json and install.sh must sit at the root of the archive
+          chmod +x "$FEATURE_DIR/install.sh"
+          tar -czf "${{ steps.meta.outputs.asset }}" -C "$FEATURE_DIR" .
+          tar -tzf "${{ steps.meta.outputs.asset }}"
+
+      - name: Publish as latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.meta.outputs.tag }}
+          ASSET: ${{ steps.meta.outputs.asset }}
+          VERSION: ${{ steps.meta.outputs.version }}
+          ID: ${{ steps.meta.outputs.id }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            # Same version as an existing release: replace its asset and keep it marked latest.
+            # Bump "version" in devcontainer-feature.json to cut a new release instead.
+            gh release upload "$TAG" "$ASSET" --clobber
+            gh release edit "$TAG" --latest
+          else
+            gh release create "$TAG" "$ASSET" \
+              --target "$GITHUB_SHA" \
+              --title "$ID $VERSION" \
+              --notes "Dev Container Feature \`$ID\` version $VERSION built from $GITHUB_SHA." \
+              --latest
+          fi

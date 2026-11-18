@@ -1,0 +1,2 @@
+astral.sh # for uv
+files.pythonhosted.org # for pypi

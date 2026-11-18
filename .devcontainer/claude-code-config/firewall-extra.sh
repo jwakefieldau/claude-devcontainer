@@ -1,6 +1,26 @@
 #!/bin/sh
 
+echo "firewall extras"
+echo "==============="
+
 # extra firewall rules here, to tweak post - https://github.com/anthropics/claude-code/blob/main/.devcontainer/init-firewall.sh
+
+# add IPs from extra domains to allow-domains IP set
+# this ipset is created in the claude install process:
+# https://github.com/anthropics/claude-code/blob/main/.devcontainer/init-firewall.sh
+echo "/etc/allow-domains-extra.txt"
+echo "----------------------------"
+cat /etc/allow-domains-extra.txt
+echo "----------------------------"
+
+for ip in $(
+    for domain in $(cut -f 1 -d "#" /etc/allow-domains-extra.txt); do
+        host $domain
+    done | grep "has address" | cut -f 4 -d " "
+); do
+    echo "Adding $ip to allowed-domains"
+    ipset add allowed-domains -exist $ip
+done
 
 # don't allow SSH out
 echo "not accepting SSH out"

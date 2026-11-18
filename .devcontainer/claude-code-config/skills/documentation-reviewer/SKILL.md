@@ -11,3 +11,7 @@ Rate each finding according to the following scale of descending severity:
 - important
 - moderate
 - minor
+
+You may be instructed to ignore certain findings, in which case do not report on or rate them.
+
+Give me specific recommendations that I can action in order to fix any issues you find.
