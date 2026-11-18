@@ -15,8 +15,18 @@ This is a generic, reusable devcontainer for me to use Claude Code across differ
 The `claude-code-config` feature is published as a tarball on the latest GitHub release. Reference it from another project's `devcontainer.json`:
 
 ```jsonc
-"features": {
-  "https://github.com/jwakefieldau/claude-devcontainer/releases/latest/download/devcontainer-feature-claude-code-config.tgz": {}
+{
+  "name": "bet-poc",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+      "ghcr.io/devcontainers/features/node:1": {},
+      "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+      "https://github.com/jwakefieldau/claude-devcontainer/releases/download/$RELEASE_TAG/devcontainer-feature-claude-code-config.tgz": {}
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/$FOO,type=bind,consistency=cached",
+  "workspaceFolder": "/workspaces/$FOO",
+  "postCreateCommand": "...",
+  "remoteUser": "vscode"
 }
 ```
 
